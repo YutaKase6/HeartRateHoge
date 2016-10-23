@@ -22,6 +22,9 @@
 		D28FDF2D1DB714F300EB4F22 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28FDF2C1DB714F300EB4F22 /* ExtensionDelegate.swift */; };
 		D28FDF2F1DB714F300EB4F22 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28FDF2E1DB714F300EB4F22 /* NotificationController.swift */; };
 		D28FDF311DB714F300EB4F22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D28FDF301DB714F300EB4F22 /* Assets.xcassets */; };
+		D28FDF491DB7171400EB4F22 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D28FDF481DB7171400EB4F22 /* HealthKit.framework */; };
+		D28FDF4C1DB7171C00EB4F22 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D28FDF4B1DB7171C00EB4F22 /* HealthKit.framework */; };
+		D2EE37601DBB6B0900C3418C /* HeartRateWorkoutSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2EE375F1DBB6B0900C3418C /* HeartRateWorkoutSessionDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +108,11 @@
 		D28FDF2E1DB714F300EB4F22 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		D28FDF301DB714F300EB4F22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D28FDF321DB714F300EB4F22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D28FDF461DB7171400EB4F22 /* HeartRateHoge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HeartRateHoge.entitlements; sourceTree = "<group>"; };
+		D28FDF481DB7171400EB4F22 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		D28FDF4A1DB7171C00EB4F22 /* HeartRateHoge WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "HeartRateHoge WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		D28FDF4B1DB7171C00EB4F22 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS3.0.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		D2EE375F1DBB6B0900C3418C /* HeartRateWorkoutSessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartRateWorkoutSessionDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D28FDF491DB7171400EB4F22 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D28FDF4C1DB7171C00EB4F22 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +158,7 @@
 				D28FDF181DB714F300EB4F22 /* HeartRateHoge WatchKit App */,
 				D28FDF271DB714F300EB4F22 /* HeartRateHoge WatchKit Extension */,
 				D28FDEED1DB714F200EB4F22 /* Products */,
+				D28FDF471DB7171400EB4F22 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,6 +177,7 @@
 		D28FDEEE1DB714F200EB4F22 /* HeartRateHoge */ = {
 			isa = PBXGroup;
 			children = (
+				D28FDF461DB7171400EB4F22 /* HeartRateHoge.entitlements */,
 				D28FDEEF1DB714F300EB4F22 /* AppDelegate.swift */,
 				D28FDEF11DB714F300EB4F22 /* ViewController.swift */,
 				D28FDEF31DB714F300EB4F22 /* Main.storyboard */,
@@ -207,7 +219,9 @@
 		D28FDF271DB714F300EB4F22 /* HeartRateHoge WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				D28FDF4A1DB7171C00EB4F22 /* HeartRateHoge WatchKit Extension.entitlements */,
 				D28FDF2A1DB714F300EB4F22 /* InterfaceController.swift */,
+				D2EE375F1DBB6B0900C3418C /* HeartRateWorkoutSessionDelegate.swift */,
 				D28FDF2C1DB714F300EB4F22 /* ExtensionDelegate.swift */,
 				D28FDF2E1DB714F300EB4F22 /* NotificationController.swift */,
 				D28FDF301DB714F300EB4F22 /* Assets.xcassets */,
@@ -223,6 +237,15 @@
 				D28FDF291DB714F300EB4F22 /* PushNotificationPayload.apns */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D28FDF471DB7171400EB4F22 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D28FDF4B1DB7171C00EB4F22 /* HealthKit.framework */,
+				D28FDF481DB7171400EB4F22 /* HealthKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,6 +354,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = BNDUPR26Y9;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					D28FDEFF1DB714F300EB4F22 = {
 						CreatedOnToolsVersion = 8.0;
@@ -353,6 +381,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = BNDUPR26Y9;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.HealthKit.watchos = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -454,6 +487,7 @@
 			files = (
 				D28FDF2F1DB714F300EB4F22 /* NotificationController.swift in Sources */,
 				D28FDF2D1DB714F300EB4F22 /* ExtensionDelegate.swift in Sources */,
+				D2EE37601DBB6B0900C3418C /* HeartRateWorkoutSessionDelegate.swift in Sources */,
 				D28FDF2B1DB714F300EB4F22 /* InterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,6 +640,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "HeartRateHoge WatchKit Extension/HeartRateHoge WatchKit Extension.entitlements";
 				DEVELOPMENT_TEAM = BNDUPR26Y9;
 				INFOPLIST_FILE = "HeartRateHoge WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -623,6 +658,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "HeartRateHoge WatchKit Extension/HeartRateHoge WatchKit Extension.entitlements";
 				DEVELOPMENT_TEAM = BNDUPR26Y9;
 				INFOPLIST_FILE = "HeartRateHoge WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -676,6 +712,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HeartRateHoge/HeartRateHoge.entitlements;
 				DEVELOPMENT_TEAM = BNDUPR26Y9;
 				INFOPLIST_FILE = HeartRateHoge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -689,6 +726,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HeartRateHoge/HeartRateHoge.entitlements;
 				DEVELOPMENT_TEAM = BNDUPR26Y9;
 				INFOPLIST_FILE = HeartRateHoge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -775,6 +813,7 @@
 				D28FDF371DB714F300EB4F22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D28FDF391DB714F300EB4F22 /* Build configuration list for PBXNativeTarget "HeartRateHoge WatchKit App" */ = {
 			isa = XCConfigurationList;
@@ -783,6 +822,7 @@
 				D28FDF3B1DB714F300EB4F22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D28FDF3D1DB714F300EB4F22 /* Build configuration list for PBXNativeTarget "HeartRateHoge" */ = {
 			isa = XCConfigurationList;
@@ -791,6 +831,7 @@
 				D28FDF3F1DB714F300EB4F22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D28FDF401DB714F300EB4F22 /* Build configuration list for PBXNativeTarget "HeartRateHogeTests" */ = {
 			isa = XCConfigurationList;
@@ -799,6 +840,7 @@
 				D28FDF421DB714F300EB4F22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D28FDF431DB714F300EB4F22 /* Build configuration list for PBXNativeTarget "HeartRateHogeUITests" */ = {
 			isa = XCConfigurationList;
@@ -807,6 +849,7 @@
 				D28FDF451DB714F300EB4F22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

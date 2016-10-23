@@ -1,14 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11055"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="11077"/>
     </dependencies>
     <scenes>
         <!--Interface Controller-->
         <scene sceneID="aou-V4-d1y">
             <objects>
-                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModuleProvider="target"/>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="HeartRateHoge_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <label alignment="left" text="Label" id="5uf-mp-YxO"/>
+                        <button width="1" alignment="left" title="Button" id="Ldh-WW-nIw">
+                            <connections>
+                                <action selector="buttonTapped" destination="AgC-eL-Hgc" id="Ft7-cN-FiG"/>
+                            </connections>
+                        </button>
+                        <label alignment="left" text="Label" id="TxK-7i-UeB"/>
+                        <group width="136" alignment="left" id="96d-wG-93R">
+                            <items>
+                                <label alignment="left" text="Label" id="19x-uo-cCM"/>
+                                <label alignment="right" text="Label" numberOfLines="0" id="PMr-a8-r6l"/>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="button" destination="Ldh-WW-nIw" id="TSd-kw-1co"/>
+                        <outlet property="heartRateLabel" destination="5uf-mp-YxO" id="byY-U2-zb3"/>
+                        <outlet property="logLabel" destination="PMr-a8-r6l" id="fbk-KM-2Gz"/>
+                        <outlet property="messageLabel" destination="TxK-7i-UeB" id="YNb-Zy-tzO"/>
+                        <outlet property="timerLabel" destination="19x-uo-cCM" id="Uc1-eN-o7l"/>
+                    </connections>
+                </controller>
             </objects>
             <point key="canvasLocation" x="220" y="345"/>
         </scene>
@@ -31,7 +54,7 @@
         <!--Notification Controller-->
         <scene sceneID="ZPc-GJ-vnh">
             <objects>
-                <controller id="4sK-HA-Art" customClass="NotificationController" customModuleProvider="target"/>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="HeartRateHoge_WatchKit_App" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="468" y="643"/>
         </scene>
