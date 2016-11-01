@@ -8,6 +8,7 @@
 
 import UIKit
 import HealthKit
+import UserNotifications
 
 class ViewController: UIViewController {
     
@@ -32,13 +33,18 @@ class ViewController: UIViewController {
                 return
             }
         }
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            guard granted else {
+                print("not allowed notification")
+                return
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 

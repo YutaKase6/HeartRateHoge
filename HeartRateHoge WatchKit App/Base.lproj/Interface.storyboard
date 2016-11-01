@@ -16,7 +16,7 @@
                                 <action selector="buttonTapped" destination="AgC-eL-Hgc" id="Ft7-cN-FiG"/>
                             </connections>
                         </button>
-                        <label alignment="left" text="Label" id="TxK-7i-UeB"/>
+                        <label alignment="left" text="Label" numberOfLines="0" id="TxK-7i-UeB"/>
                         <group width="136" alignment="left" id="96d-wG-93R">
                             <items>
                                 <label alignment="left" text="Label" id="19x-uo-cCM"/>
@@ -54,7 +54,11 @@
         <!--Notification Controller-->
         <scene sceneID="ZPc-GJ-vnh">
             <objects>
-                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="HeartRateHoge_WatchKit_App" customModuleProvider="target"/>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="HeartRateHoge_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <imageView alignment="left" image="wall-clock (1)" id="cNr-Bm-FLC"/>
+                    </items>
+                </controller>
             </objects>
             <point key="canvasLocation" x="468" y="643"/>
         </scene>

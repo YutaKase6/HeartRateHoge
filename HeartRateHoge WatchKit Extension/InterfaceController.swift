@@ -13,9 +13,10 @@
 import WatchKit
 import Foundation
 import HealthKit
+import UserNotifications
 
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, UNUserNotificationCenterDelegate{
     
     // 心拍数表示用ラベル
     @IBOutlet var heartRateLabel: WKInterfaceLabel!
@@ -45,8 +46,8 @@ class InterfaceController: WKInterfaceController {
     var isEndState = false
     // 心拍数保管配列
     var heartRateValues:[Double] = []
-    // 静止時に測定した心拍数の平均値
-    var restHeartRateAve = 0.0
+    // 体験終了しきい値心拍数(静止時に測定した心拍数の平均値から求める)
+    var thresholdHeartRate = 0.0
     
     // タイマーカウント用
     var timeCount = 0
@@ -58,7 +59,7 @@ class InterfaceController: WKInterfaceController {
     // 心拍数上昇から体験終了までの秒数
     let endOffsetSec = 60
     // 心拍数上昇判定係数
-    let thresholdRate = 1.0
+    let thresholdRate = 1.1
     
     // ログデータ表示用テキスト
     var text = ""
@@ -83,7 +84,15 @@ class InterfaceController: WKInterfaceController {
         let dataTypes = Set([self.heartRateType])
         self.healthStore.requestAuthorization(toShare: nil, read: dataTypes) { (success, error) -> Void in
             guard success else {
-                print("not allowed")
+                print("not allowed healthdata")
+                return
+            }
+        }
+        // 通知許可
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            guard granted else {
+                print("not allowed notification")
                 return
             }
         }
@@ -109,7 +118,7 @@ class InterfaceController: WKInterfaceController {
         self.heartRateValues.removeAll()
         self.isRestState = false
         self.isEndState = false
-        self.restHeartRateAve = 0.0
+        self.thresholdHeartRate = 0.0
     }
     
     // START/STOP button
@@ -117,9 +126,17 @@ class InterfaceController: WKInterfaceController {
         if self.isRunning == false {
             self.isRunning = true
             // 心拍測定開始(workout start)
-            self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.other, locationType: HKWorkoutSessionLocationType.unknown)
-            self.workoutSession!.delegate = HeartRateWorkoutSessionDelegate(self.onReceiveHeartRate)
-            self.healthStore.start(self.workoutSession!)
+            let configration = HKWorkoutConfiguration()
+            configration.activityType = .other
+            configration.locationType = .unknown
+            do{
+                self.workoutSession = try HKWorkoutSession(configuration: configration)
+                self.workoutSession!.delegate = HeartRateWorkoutSessionDelegate(self.onReceiveHeartRate)
+                self.healthStore.start(self.workoutSession!)
+            }
+            catch let error as NSError{
+                fatalError("\(error.localizedDescription)")
+            }
             // 静止状態カウントスタート
             self.isRestState = true
             self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDownRestTime), userInfo: nil, repeats: true)
@@ -130,6 +147,7 @@ class InterfaceController: WKInterfaceController {
             self.isRunning = false
             // 心拍測定終了
             self.healthStore.end(self.workoutSession!)
+            self.timer.invalidate()
             self.initAll()
         }
     }
@@ -144,13 +162,17 @@ class InterfaceController: WKInterfaceController {
         }
         // 取得心拍数
         let heartRateValue = quantity.doubleValue(for: self.heartRateUnit)
-        self.heartRateValues.append(heartRateValue)
+        // 静止状態時は平均心拍数計算のため心拍数を保管
+        if self.isRestState {
+            self.heartRateValues.append(heartRateValue)
+        }
         // 体験終了判定
         if !isRestState && !isEndState {
-            let isEnd = heartRateValue > self.restHeartRateAve * self.thresholdRate
+            let isEnd = heartRateValue > self.thresholdHeartRate
             if isEnd {
                 self.isEndState = true
                 self.messageLabel.setText("Count down...")
+                self.sendNotification()
                 DispatchQueue.main.async(execute: {
                     self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDownRestTime), userInfo: nil, repeats: true)
                 })
@@ -173,22 +195,24 @@ class InterfaceController: WKInterfaceController {
     
     // タイマー作動時毎秒呼ばれる
     func countDownRestTime() {
-        print("call")
         self.timerLabel.setText("\(self.timeCount)")
         
         if self.timeCount == 0 {
             if isRestState {
                 // 静止状態終了処理
                 // 平均心拍を計算
-                self.restHeartRateAve = self.calcAve(self.heartRateValues)
-                self.messageLabel.setText("ave=\(self.restHeartRateAve),*\(self.thresholdRate)=\(self.restHeartRateAve*self.thresholdRate)")
+                let ave = self.calcAve(self.heartRateValues)
+                self.thresholdHeartRate = ave * self.thresholdRate
+                self.messageLabel.setText("ave=\(ave)\n*\(self.thresholdRate)=\(self.thresholdHeartRate)")
                 
                 self.isRestState = false
-//                self.timeCount = self.endOffsetSec
-                self.timeCount = 60
+                self.timeCount = self.endOffsetSec
             }else {
                 // 体験終了処理
-                self.messageLabel.setText("The end.")
+                // 心拍測定終了
+                self.healthStore.end(self.workoutSession!)
+                self.timer.invalidate()
+                self.initAll()
             }
             self.timer.invalidate()
             self.heartRateValues.removeAll()
@@ -196,6 +220,37 @@ class InterfaceController: WKInterfaceController {
             //カウントダウン
             self.timeCount -= 1
         }
+    }
+    
+    // 通知を送信
+    fileprivate func sendNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        let content = UNMutableNotificationContent()
+        content.title = NSString.localizedUserNotificationString(forKey: "hoge", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey: "hoge", arguments: nil)
+        content.sound = UNNotificationSound.default()
+        content.categoryIdentifier = "myCategory"
+        
+        let category = UNNotificationCategory(identifier: "myCategory", actions: [], intentIdentifiers: [], options: [])
+        center.setNotificationCategories([category])
+        
+        // 60秒後に通知
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: TimeInterval(self.endOffsetSec), repeats: false)
+        let id = String(Date().timeIntervalSinceReferenceDate)
+        let request = UNNotificationRequest.init(identifier: id, content: content, trigger: trigger)
+        
+        center.add(request)
+    }
+    
+    // 通知の閉じる押した時に呼ばれる
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+    // 通知が表示されると呼ばれる
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
     }
     
     // Arrayの平均値を計算
